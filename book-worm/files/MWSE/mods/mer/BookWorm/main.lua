@@ -129,7 +129,7 @@ local function registerMCM()
     end
 
 
-    local template = mwse.mcm:createTemplate(text.extensionName)
+    local template = mwse.mcm:createTemplate(text.extensionModListName)
     template:register()
     local page = template:createSideBarPage()
     addSideBar(page)
