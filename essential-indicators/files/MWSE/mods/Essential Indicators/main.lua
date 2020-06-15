@@ -50,12 +50,17 @@ local function essentialSwitch()
 		end
 
 		if config.npcVanilla then
-			local npc = data.vanillaTable[ref.baseObject.id:lower()]
+			local vanillaNpcTable=data.vanillaTable
+			local refId = ref.baseObject.id:lower()
+			local npc = vanillaNpcTable[refId]
+
 			if config.noEssentials and npc then
 				ref.baseObject.essential = false
+
 			elseif not config.noEssentials and npc then
 				local entry = tes3.getJournalIndex{ id = (npc.entry) }
 				local index = npc.index
+
 				if ((entry < index) or (entry == nil)) then
 					ref.baseObject.essential = true
 				elseif (entry >= index) then
@@ -325,43 +330,43 @@ local function registerMCM()
 
 	local messageButton = category:createOnOffButton({
 		label = text.uiSettings_enableMessagesLabel,
-		description = text.uiSettings_enableMessagesDescription,
+		description = text.uiSettings_enableMessages_description,
 		variable = mwse.mcm:createTableVariable{id = "messages", table = config},
 	})
 
 	local autoHideButton = category:createOnOffButton({
 		label = text.uiSettings_enableAutoHidingCrosshair,
-		description = "Enable Autohiding Crosshair\n\nDetermines whether the crosshair disappears while not in use.\n\nDefault: On",
+		description = text.uiSettings_enableAutoHidingCrosshair_description,
 		variable = mwse.mcm:createTableVariable{id = "autoHide", table = config},
 	})
 
 	local ownershipButton = category:createOnOffButton({
 		label = text.uiSettings_enableOwnershipIndicator,
-		description = "Enable Ownership Indicator\n\nDetermines whether the crosshair indicates when you're targeting an owned item or NPC to pickpocket.\n\nDefault: On",
+		description = text.uiSettings_enableOwnershipIndicator_description,
 		variable = mwse.mcm:createTableVariable{id = "ownershipTarget", table = config},
 	})
 
 	local npcTargetButton = category:createOnOffButton({
 		label =  text.uiSettings_enableEssentialNPCIndicator,
-		description = "Enable Essential NPC Indicator\n\nDetermines whether the crosshair indicates when you're targeting a quest-essential NPC.\n\nDefault: On",
+		description = text.uiSettings_enableEssentialNPCIndicator_description,
 		variable = mwse.mcm:createTableVariable{id = "npcTarget", table = config},
 	})
 
 	local itemTargetButton = category:createOnOffButton({
 		label = text.uiSettings_enableEssentialItemIndicator,
-		description = "Enable Essential Item Indicator\n\nDetermines whether the crosshair indicates when you're targeting a quest-essential item.\n\nDefault: On",
+		description = text.uiSettings_enableEssentialItemIndicator_description,
 		variable = mwse.mcm:createTableVariable{id = "itemTarget", table = config},
 	})
 
 	local tooltipButton = category:createOnOffButton({
 		label = text.uiSettings_enableQuestItemsTooltip,
-		description = "Enable Tooltip for Quest Items\n\nDetermines whether quest-essential items receive a helpful tooltip reminding the player of their importance.\n\nDefault: On",
+		description = text.uiSettings_enableQuestItemsTooltip_description,
 		variable = mwse.mcm:createTableVariable{id = "essentialTooltip", table = config},
 	})
 
 	local crosshairScaleSlider = category:createSlider({
 		label = text.uiSettings_crossHairScale .. ": %s%%",
-		description = "Determines the size of the default crosshair on the screen.\n\nDefault: 100%",
+		description =  text.uiSettings_crossHairScale_description,
 		min = 0,
 		max = 200,
 		step = 1,
@@ -371,7 +376,7 @@ local function registerMCM()
 
 	local indicatorScaleSlider = category:createSlider({
 		label = text.uiSettings_indicatorScale .. ": %s%%",
-		description = "Determines the size of the indicator crosshair/texture on the screen.\n\nDefault: 100%",
+		description = text.uiSettings_indicatorScale_description,
 		min = 0,
 		max = 200,
 		step = 1,
@@ -383,25 +388,25 @@ local function registerMCM()
 
 	local vanillaButton = category2:createOnOffButton({
 		label = text.npcSettings_enableChangesForVanillaEssentialNPC,
-		description = "Enable Messages\n\nDetermines whether NPCs with the 'essential' status in the vanilla game will have their status changed once they are no longer needed.\n\nDefault: On",
+		description = text.npcSettings_enableChangesForVanillaEssentialNPC_description,
 		variable = mwse.mcm:createTableVariable{id = "npcVanilla", table = config}
 	})
 
 	local extendedButton = category2:createOnOffButton({
 		label = text.npcSettings_enableChangesForExtendedEssentialNPC,
-		description = "Enable Messages\n\nDetermines whether NPCs that lacked the 'essential' status in the vanilla game, but whose deaths still rendered the main quest impossible to finish, will be given the 'essential' status and have it changed once they are no longer needed.\n\nDefault: On",
+		description = text.npcSettings_enableChangesForExtendedEssentialNPC_description,
 		variable = mwse.mcm:createTableVariable{id = "npcExtended", table = config}
 	})
 
 	local invincibleButton = category2:createOnOffButton({
 		label = text.npcSettings_enableInvincibleEssentialNPC,
-		description = "Enable Invincible Essential NPCs\n\nDetermines whether NPCs with the 'essential' status are made invincible, all damage being dealt to their fatigue rather than health.\n\nDefault: Off",
+		description = text.npcSettings_enableInvincibleEssentialNPC_description,
 		variable = mwse.mcm:createTableVariable{id = "essentialsInvincible", table = config}
 	})
 
 	local disableButton = category2:createOnOffButton({
 		label = text.npcSettings_disableEssentialNPC,
-		description = "Disable Essential NPCs\n\nDetermines whether the 'essential' status is removed from all NPCs. Not recommended unless you're an experienced player or just sick of messageboxes getting in the way of your rampage.\n\nDefault: Off",
+		description = text.npcSettings_disableEssentialNPC_description,
 		variable = mwse.mcm:createTableVariable{id = "noEssentials", table = config}
 	})
 
