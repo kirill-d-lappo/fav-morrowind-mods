@@ -6,6 +6,8 @@
 
 Adds a continue button to the main menu, to instantly load your most recent save.
 
+![example.jpg](example.jpg)
+
 ## Authors
 
 Petethegoat ([Nexus profile](https://www.nexusmods.com/morrowind/users/25319994))
