@@ -4,27 +4,78 @@
 
 local common = {}
 
+-- Logging
+
+function formatMessage(level, message)
+	return "[continue] [" .. level .. "] " .. message
+end
+
+function log(message)
+	mwse.log(message)
+end
+
+function log_info(message)
+	log(formatMessage("INFO", message))
+end
+
+-- Language
+
+function getDefaultLanguage()
+	return "eng"
+end
+
+function getLanguage()
+	-- tes3.getLanguage()
+	-- Intentionally apply rus translation - tes3.getLanguage() doesn't return correct lang for russian edition
+	return "rus"
+end
+
+function getLocalizedContinueButtonSettings(button_id)
+
+	local langSuffix = ""
+
+	local language = getLanguage()
+	local defaultLanguage = getDefaultLanguage()
+
+	if (language ~= defaultLanguage and language ~= "") then
+		langSuffix = "_" .. language
+	end
+
+	local buttonSettings = {
+		id = button_id,
+		idle = "textures/continue/menu_continue" .. langSuffix .. ".dds",
+		over = "textures/continue/menu_continue_over" .. langSuffix .. ".dds",
+		pressed = "textures/continue/menu_continue_pressed" .. langSuffix .. ".dds",
+	}
+
+	return buttonSettings
+end
+
 -- Translations
 
 function loadTranslation()
 	-- Get the ISO language code.
-	local language = tes3.getLanguage()
+	local language = getLanguage()
+	local defaultLanguage = getDefaultLanguage()
 
-	-- Load the dictionaries, and start off with English.
+	log_info("default lang - " .. defaultLanguage)
+	log_info("language - " .. language)
+
+	-- Load the dictionary for default language
 	local dictionaries = require("continue.translations")
-    -- Intentionally apply rus translation - tes3.getLanguage() doesn't return correct lang for russian
-    local dictionary = dictionaries["rus"]
+	local dictionary = dictionaries[defaultLanguage]
 
-	-- If we aren't doing English, copy over translated entries.
-	if (language ~= "eng" and dictionaries[language]) then
+
+	-- If we aren't doing default language, override default entries with translated ones.
+	if (language ~= defaultLanguage and dictionaries[language]) then
+		log_info("Applying translation: " .. language)
 		table.copy(dictionaries[language], dictionary)
 	end
 
-	-- Set the dictionary.
-	common.text = dictionary
+	return dictionary
 end
 
-loadTranslation()
+common.text = loadTranslation()
 
 local config = mwse.loadConfig("pg_continue_config")
 if not config then
@@ -139,12 +190,9 @@ local function onCreatedMenuOptions(e)
 	local newGameButton = mainMenu:findChild(menu_new_id)
 	local buttonContainer = newGameButton.parent
 
-	local button = buttonContainer:createImageButton({
-		id = menu_continue_id,
-		idle = "textures/menu_continue.dds",
-		over = "textures/menu_continue_over.dds",
-		pressed = "textures/menu_continue_pressed.dds",
-	})
+	local buttonSettings = getLocalizedContinueButtonSettings(menu_continue_id)
+	local button = buttonContainer:createImageButton(buttonSettings)
+
 	button.height = 50
 	button.autoHeight = false
 	button:register("mouseClick", onClickContinueButton)
