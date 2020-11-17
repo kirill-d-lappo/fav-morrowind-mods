@@ -12,7 +12,7 @@ I translated (and sometimes added translation support) into Russian all of these
 
 1. All of the modes **require MGXE** to be installed. Check [that Nexus page](https://www.nexusmods.com/morrowind/mods/41102).
 
-1. Then just copy mod files (`<mod-name>/files/**`) into `<MorrowindRoot>/Data Files` folder.
+1. Then just copy mod files (`<mod-name>/Data Files/**`) into `<MorrowindRoot>/Data Files` folder.
 
 ## Known problems
 
